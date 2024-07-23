@@ -4,6 +4,12 @@ docker.io/calico/cni:v3.25.0
 docker.io/calico/node:v3.25.0
 docker.io/calico/kube-controllers:v3.25.0
 docker.io/calico/pod2daemon-flexvol:v3.25.0
+grafana/grafana:8.4.7
+grafana/grafana:10.3.3
+busybox:1.28.4
+grafana/loki:2.3.0
+grafana/loki:2.6.1
+grafana/promtail:2.3.0
 #支持指定架构
 --platform=linux/arm64 xiaoyaliu/alist
 
