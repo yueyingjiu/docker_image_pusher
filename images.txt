@@ -1,6 +1,9 @@
 nginx
 #支持私库
-calico/cni:v3.25.0
+docker.io/calico/cni:v3.25.0
+docker.io/calico/node:v3.25.0
+docker.io/calico/kube-controllers:v3.25.0
+calico/kube-controllers:v3.25.0
 #支持指定架构
 --platform=linux/arm64 xiaoyaliu/alist
 
