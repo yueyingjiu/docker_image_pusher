@@ -29,3 +29,4 @@ gcr.io/cadvisor/cadvisor:v0.37.0
 quay.io/prometheus/node-exporter:v1.8.2
 registry.k8s.io/kube-state-metrics/kube-state-metrics:v2.10.1
 prom/prometheus:v2.53.1
+nginx:1.26.2-alpine-slim
