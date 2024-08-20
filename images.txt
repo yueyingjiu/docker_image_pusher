@@ -1,14 +1,17 @@
 #支持私库
 #支持指定架构
---platform=linux/arm64 xiaoyaliu/alist
+#--platform=linux/arm64 xiaoyaliu/alist
 
+alpine:3.20
+``
 #calico
 docker.io/calico/cni:v3.25.0
 docker.io/calico/node:v3.25.0
 docker.io/calico/kube-controllers:v3.25.0
 docker.io/calico/pod2daemon-flexvol:v3.25.0
-
+```
 #grafana + liki + promtail
+```
 grafana/grafana:8.4.7
 grafana/grafana:10.3.3
 busybox:1.28.4
@@ -16,7 +19,9 @@ grafana/loki:2.6.1
 grafana/loki:3.1.0
 grafana/promtail:2.3.0
 grafana/promtail:3.0.0
+```
 
+```
 #juicefs
 juicedata/juicefs-csi-driver:v0.24.4
 juicedata/csi-dashboard:v0.24.4
@@ -24,9 +29,10 @@ registry.k8s.io/sig-storage/livenessprobe:v2.12.0
 registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.9.0
 registry.k8s.io/sig-storage/csi-provisioner:v2.2.2
 registry.k8s.io/sig-storage/csi-resizer:v1.9.0
-
+```
+```
 gcr.io/cadvisor/cadvisor:v0.37.0
 quay.io/prometheus/node-exporter:v1.8.2
 registry.k8s.io/kube-state-metrics/kube-state-metrics:v2.10.1
 prom/prometheus:v2.53.1
-nginx:1.26.2-alpine-slim
+```
