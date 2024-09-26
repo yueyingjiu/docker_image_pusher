@@ -51,10 +51,19 @@ kubectl create ns monitor
 
 # 部署grafana
 1. 创建对象  
+- PersistentVolumeClaim：pvc-monitor-grafana  
+```
+storage: 5Gi
+```
+
+- Service：grafana
+```
+nodeport: 30200 #对外端口
+```
+
 - Deployment: grafana
 ```
-image: harbor.datastudio.mtr/library/grafana:10.3.3  
-containerPort: 3000  
+image: harbor.datastudio.mtr/library/grafana:10.3.3   
 requests:
   cpu: 100m
   memory: 200Mi
@@ -63,40 +72,46 @@ limits:
   memory: 2Gi
 limits.cpu: 1 limits.memory: 2Gi  
 ```
-- Service：grafana
-```
-nodeport: 30200
-```
-
-- PersistentVolumeClaim：pvc-monitor-grafana  
-```
-storage: 5Gi
-```
 
 2. 执行文件：
 ```shell
 kubectl apply -f grafana.yaml
 ```
+
 3. 校验：登录http://\<node-ip\>:30200，node-ip为grafana所在节点ip，port对应nodeport。登录默认账密均为admin。
 
 
 # 部署loki
 1. 创建对象：
-> ServiceAccount: loki  
-> Role：loki  
-> RoleBinding：loki  
-> StatefulSet: loki  
-> ConfigMap: loki  
-> Service: loki  
-> PersistentVolumeClaim: pvc-monitor-loki  
+- ServiceAccount: loki  
+- Role：loki  
+- RoleBinding：loki  
+- PersistentVolumeClaim: pvc-monitor-loki 
+```
+storage: 50Gi
+```
 
-2. 配置：
-> containerPort：3100
-> nodeport：30201
-> image: harbor.datastudio.mtr/library/lmk-images/loki:3.1.0
+- Service: loki  
+```
+port: 3100 #集群内端口
+nodePort: 30201
+```
 
-3. 执行文件：
-> 可修改配置：svc的端口映射（修改port需要同样修改configmap的http_listen_port），pvc的容量大小（暂定50G，后续根据磁盘占用情况增加），configmap中的retention_period为保留日志范围（uat暂定半年）
+- ConfigMap: loki  
+```
+http_listen_port: 3100 对应service的port
+table_manager:
+  retention_deletes_enabled: true #保留数据
+  retention_period: 4380h	#保留时间（h）
+```
+
+- StatefulSet: loki  
+```
+image: harbor.datastudio.mtr/library/loki:3.1.0
+containerPort: 3100
+```
+
+2. 执行文件：
 ```shell
 kubectl apply -f loki-rbac.yaml
 kubectl apply -f loki-configmap.yaml
@@ -105,54 +120,120 @@ kubectl apply -f loki-statefulset.yaml
 校验：在grafana中添加loki数据源，ip填写为http://loki:3100，loki为service中的name，端口为service中的port,测试连接能否保存。
 
 
-# 部署fluent-bit
-> fluent-bit用于抓取日志并推送至loki。相比于promtial，fluent-bit更加轻量级，可使用较少资源完成日志采集。
-> 使用helm部署，准备 fluent-bit-0.47.9.tgz 和 fluent-bit-values.yaml。镜像来源为：harbor.datastudio.mtr/library/fluent-bit-plugin-loki 。
-> 需要修改配置在 fluent-bit-values.yaml 完成，参考注释，官方配置参考：https://grafana.com/docs/loki/latest/send-data/fluentbit/#configuration-options 
+# 部署fluent-bit（helm）
+fluent-bit用于抓取日志并推送至loki。相比于promtial，fluent-bit更加轻量级，可使用较少资源完成日志采集。  
+1. 从github下载fluent-bit的0.47.9的压缩包。地址：https://github.com/fluent/helm-charts/releases  
+2. 创建 fluent-bit-values.yaml ，配置参考：https://grafana.com/docs/loki/latest/send-data/fluentbit/#configuration-options  
+- fluent-bit-values.yaml
+```
+repository: harbor.datastudio.mtr/library/fluent-bit-plugin-loki
+value: http://loki:3100/loki/api/v1/push  #loki:3100为loki的svc名称及端口，后缀不变
+```
+3. 执行文件：
 ```shell
 helm install fluent-bit fluent-bit-0.47.9.tgz -f fluent-bit-values.yaml -n monitor
 ```
-校验：等pod成功运行后，在grafana随机查看任意namespace下pod的日志。
+
+4. 校验：等pod成功运行后，在grafana随机查看任意namespace下pod的日志。
 
 
 # 部署cadvisor
-cadvisor用于收集、处理和导出容器的运行时信息，特别是针对 Docker 容器。它提供了对容器的 CPU、内存、磁盘 I/O、网络使用情况等资源使用情况的实时统计。
-> Prometheus通过config配置可抓取cadvisor数据。 
-> 在uat中节点的8080被占用，因此注释hostNetwork: true，避免端口占用。
-> 确保部署环境存在路径 /var/run ，/var/lib/docker 并且有读写权限。
+cadvisor用于收集、处理和导出容器的运行时信息，特别是针对 Docker 容器。它提供了对容器的 CPU、内存、磁盘 I/O、网络使用情况等资源使用情况的实时统计。  
+1. 创建对象
+- ServiceAccount: cadvisor
+- DaemonSet: cadvisor
+```
+image: harbor.datastudio.mtr/library/cadvisor:0.49.1
+containerPort: 8080
+```
+
+2. 执行文件
 ```shell
 kubectl apply -f cadvisor.yaml
 ```
-校验：访问http://192.168.208.2:8080，ip可替换为集群中任意节点ip，端口为cadvisor.yaml中的containerPort，默认为8080。
+
+3. 校验：访问http://\<node-ip\>:8080，ip可替换为集群中任意节点ip，端口为DaemonSet的containerPort。
 
 
 # 部署node-exporter
-Node Exporter 主要负责收集和暴露类 UNIX 系统（Linux、BSD 等）的硬件和系统运行指标。
-> 确保存在路径 /proc ，/dev，/sys，/rootfs，/etc/localtime ，并且有读写权限
+Node Exporter 主要负责收集和暴露类 UNIX 系统（Linux、BSD 等）的硬件和系统运行指标。  
+1. 创建对象
+- DaemonSet: node-exporter
+```
+hostNetwork: true # 使用物理机IP地址(调度到那个节点,就使用该节点IP地址)
+image: harbor.datastudio.mtr/library/node-exporter:1.8.2
+containerPort: 9100
+requests:
+  cpu: 0.15
+```
+
+2. 执行文件
 ```shell
 kubectl apply -f node-exporter.yaml
 ```
-校验：访问http://192.168.208.2:9100，ip可替换为任意节点ip，端口为cadvisor.yaml中的containerPort，默认为9100。
+
+3. 校验：访问http://\<node-ip\>:9100，ip可替换为任意节点ip，端口为DaemonSet的containerPort。
 
 
 # 部署kube-state-metrics
 kube-state-metrics 主要是收集和报告集群中例如 Deployment、DaemonSet、Pod 等各种资源的实时状态信息。
-> 可修改配置：svc的nodePort，ClusterRole可增加rules以获取权限监控更多资源
+1. 创建对象
+- ServiceAccount: kube-state-metrics
+- ClusterRole: 
+- ClusterRoleBinding: 
+- Service: 
+```
+prometheus.io/scrape: 'true'
+port: 8080  #供Prometheus发现的默认端口
+nodePort: 31666
+```
+
+- Deployment: 
+```
+image: harbor.datastudio.mtr/library/kube-state-metrics:2.10.1
+```
+
+2. 执行文件
 ```shell
 kubectl apply -f kube-state-metrics.yaml
 ```
-校验：访问http://\<node-ip\>:31666，node-ip替换为kube-sate-metrics所在节点的ip，端口为kube-state-metrics中service的nodePort，默认为31666。
+
+3. 校验：访问http://\<node-ip\>:31666，node-ip替换为kube-sate-metrics所在节点的ip，端口为service的nodePort。
 
 
 # 部署prometheus
-> 可修改配置：svc的端口映射，pvc大小，configmap的job配置与监控组件匹配，匹配方式参考官网配置
+1. 创建对象
+- ServiceAccount: prometheus
+- ClusterRole: prometheus
+- ClusterRoleBinding: prometheus
+- Secret: prometheus
+- Service: Service
+```
+port: 9090
+nodePort: 31090
+```
+
+- PersistentVolumeClaim: pvc-monitor-prometheus
+```
+storage: 10Gi
+```
+
+- ConfigMap: prometheus-config
+- Deployment: prometheus
+```
+image: harbor.datastudio.mtr/library/prometheus:2.53.1
+```
+
+2. 执行文件
 ```shell
 kubectl apply -f prometheus-rbac.yaml
 kubectl apply -f prometheus-configmap.yaml
 kubectl apply -f prometheus.yaml
 ```
-校验：在grafana中添加Prometheus数据源，ip为http://prometheus.monitor.svc:9090，其中prometheus为prometheus.yaml中service的name，monitor为prometheus.yaml中deployment的namespace，9090为prometheus.yaml中service的port，保存并测试数据源。
-校验数据源：登录http://\<node-ip\>:31090，node-ip替换Prometheus所在节点的ip，端口为service的nodePort，默认为31090。检查target是否包含cadvisor、node-exporter、kube-state-metrics的数据来源（通过label判断） 
+
+3. 在grafana中添加Prometheus数据源，ip为http://prometheus.monitor.svc:9090，其中prometheus为service的name，monitor为namespace，9090为service的port，保存并测试数据源。  
+
+4. 校验数据源：登录http://\<node-ip\>:31090，node-ip替换Prometheus所在节点的ip，端口为service的nodePort。检查target是否包含cadvisor、node-exporter、kube-state-metrics的数据来源（通过label判断） 
 
 # 在grafana中创建展板
 导入展板文件，可从 https://grafana.com/grafana/dashboards/ 查找适合的展板
