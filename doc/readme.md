@@ -52,13 +52,16 @@ kubectl create ns monitor
 # 部署grafana
 1. 创建对象  
 - Deployment: grafana
-> image: harbor.datastudio.mtr/library/grafana:10.3.3  
-> containerPort：3000  
-> requests.cpu: 100m requests.memory: 200Mi  
-> limits.cpu: 1 limits.memory: 2Gi  
-
+```
+image: harbor.datastudio.mtr/library/grafana:10.3.3  
+containerPort：3000  
+requests.cpu: 100m requests.memory: 200Mi  
+limits.cpu: 1 limits.memory: 2Gi  
+```
 - Service：grafana
-> nodeport：30200
+```
+nodeport：30200
+```
 
 - PersistentVolumeClaim：pvc-monitor-grafana  
 
