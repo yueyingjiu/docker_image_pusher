@@ -5,9 +5,9 @@
 > sc: nfs-storage  
 > 镜像来源：harbor.datastudio.mtr  
 > 节点：
-> - 178.128.12.2 pro2 sles15.
->   178.128.12.3 pro3
->   178.128.12.4 pro4
+> - 178.128.12.2 pro2 sles15.2  
+> - 178.128.12.3 pro3 sles15.2  
+> - 178.128.12.4 pro4 sles15.2  
 
 # 镜像包准备
 1. 先在本地docker上准备部署过程需要的镜像包
@@ -23,7 +23,6 @@ docker pull prom/prometheus:v2.53.1
 2. 登录公司阿里云仓库，将本地镜像打tag并上传
 ```
 #docker login --username=jenkins@5628939625451055 registry-intl.cn-hangzhou.aliyuncs.com -p "g{HlLbpA)yqRlQNig92HtnW#Q1G"
-docker login --username=*** registry-intl.cn-hangzhou.aliyuncs.com -p "***"
 docker tag xxx:v* registry-intl.cn-hangzhou.aliyuncs.com/smartocc/***:v*
 docker push registry-intl.cn-hangzhou.aliyuncs.com/smartocc/***:v*
 ```
@@ -52,16 +51,16 @@ kubectl create ns monitor
 
 # 部署grafana
 1. 创建对象  
-Deployment: grafana
+- Deployment: grafana
 > image: harbor.datastudio.mtr/library/grafana:10.3.3  
-> containerPort：3000
-> requests.cpu: 100m requests.memory: 200Mi
-> limits.cpu: 1 limits.memory: 2Gi
+> containerPort：3000  
+> requests.cpu: 100m requests.memory: 200Mi  
+> limits.cpu: 1 limits.memory: 2Gi  
 
-Service：grafana
+- Service：grafana
 > nodeport：30200
 
-PersistentVolumeClaim：pvc-monitor-grafana  
+- PersistentVolumeClaim：pvc-monitor-grafana  
 
 2. 执行文件：
 ```shell
