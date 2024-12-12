@@ -7,7 +7,7 @@ jenkinsci/jenkins:2.488
 #postgres:17.0
 #redis:7.4.0
 
-
+ 
 #--platform=linux/arm64 xiaoyaliu/alist
 #fluent/fluent-bit:3.1.7
 #grafana/fluent-bit-plugin-loki:latest
