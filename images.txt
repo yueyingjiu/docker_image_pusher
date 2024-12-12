@@ -1,13 +1,12 @@
 #支持私库
 #支持指定架构
 
-jenkins/jenkins:2.488
+jenkins:2.488
 #debian:unstable-slim
 #nginx:latest
 #postgres:17.0
 #redis:7.4.0
 
- 
 #--platform=linux/arm64 xiaoyaliu/alist
 #fluent/fluent-bit:3.1.7
 #grafana/fluent-bit-plugin-loki:latest
