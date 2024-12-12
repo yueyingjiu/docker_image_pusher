@@ -1,10 +1,11 @@
 #支持私库
 #支持指定架构
 
-debian:unstable-slim
-nginx:latest
-postgres:17.0
-redis:7.4.0
+jenkins/jenkins
+#debian:unstable-slim
+#nginx:latest
+#postgres:17.0
+#redis:7.4.0
 
 
 #--platform=linux/arm64 xiaoyaliu/alist
