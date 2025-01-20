@@ -1,6 +1,7 @@
 #支持私库
 #支持指定架构
-k8s.gcr.io/sig-storage/nfs-subdir-external-provisioner:v4.0.2
+harbor.datastudio.mtr/library/fluent-bit-plugin-loki
+#k8s.gcr.io/sig-storage/nfs-subdir-external-provisioner:v4.0.2
 #jenkins/jenkins:2.488
 #debian:unstable-slim
 #nginx:latest
