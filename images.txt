@@ -1,6 +1,6 @@
 #支持私库
 #支持指定架构
-cr.fluentbit.io/fluent/fluent-bit:latest
+grafana/fluent-bit:latest:latest
 #k8s.gcr.io/sig-storage/nfs-subdir-external-provisioner:v4.0.2
 #jenkins/jenkins:2.488
 #debian:unstable-slim
