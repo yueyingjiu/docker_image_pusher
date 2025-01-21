@@ -28,9 +28,10 @@
 
 #loki
 #grafana/loki:3.1.0
-docker.io/grafana/loki-canary:3.3.2
-docker.io/nginxinc/nginx-unprivileged:1.27-alpine
-docker.io/v2/prom/memcached-exporter/manifests/v0.15.0
+grafana/loki-canary:3.3.2
+nginxinc/nginx-unprivileged:1.27-alpine
+prom/memcached-exporter:v0.15.0
+memcached:1.6.34-alpine
 #promtail
 #grafana/promtail:3.0.0
 
