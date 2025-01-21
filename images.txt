@@ -1,7 +1,7 @@
 #支持私库
 #支持指定架构
 #grafana/fluent-bit-plugin-loki:latest
-k8s.gcr.io/sig-storage/nfs-subdir-external-provisioner:v4.0.2
+#k8s.gcr.io/sig-storage/nfs-subdir-external-provisioner:v4.0.2
 #jenkins/jenkins:2.488
 #debian:unstable-slim
 #nginx:latest
@@ -21,14 +21,17 @@ k8s.gcr.io/sig-storage/nfs-subdir-external-provisioner:v4.0.2
 
 #grafana
 #grafana/grafana:10.3.3
-docker.io/bats/bats:v1.4.1
-docker.io/curlimages/curl:7.85.0
-docker.io/library/busybox:1.31.1
-quay.io/kiwigrid/k8s-sidecar:1.28.0
+#docker.io/bats/bats:v1.4.1
+#docker.io/curlimages/curl:7.85.0
+#docker.io/library/busybox:1.31.1
+#quay.io/kiwigrid/k8s-sidecar:1.28.0
 
-#grafana/loki:2.6.1
+#loki
 #grafana/loki:3.1.0
-#grafana/promtail:2.3.0
+docker.io/grafana/loki-canary:3.3.2
+docker.io/nginxinc/nginx-unprivileged:1.27-alpine
+docker.io/v2/prom/memcached-exporter/manifests/v0.15.0
+#promtail
 #grafana/promtail:3.0.0
 
 #juicefs
@@ -39,8 +42,7 @@ quay.io/kiwigrid/k8s-sidecar:1.28.0
 #registry.k8s.io/sig-storage/csi-provisioner:v2.2.2
 #registry.k8s.io/sig-storage/csi-resizer:v1.9.0
 
-#gcr.io/cadvisor/cadvisor:v0.37.0
-gcr.io/cadvisor/cadvisor:v0.49.1
+#gcr.io/cadvisor/cadvisor:v0.49.1
 #quay.io/prometheus/node-exporter:v1.8.2
 #registry.k8s.io/kube-state-metrics/kube-state-metrics:v2.10.1
 #prom/prometheus:v2.53.1
