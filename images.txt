@@ -20,10 +20,9 @@ k8s.gcr.io/sig-storage/nfs-subdir-external-provisioner:v4.0.2
 #docker.io/calico/pod2daemon-flexvol:v3.25.0
 
 #grafana + liki + promtail
-#grafana/grafana:8.4.7
 #grafana/grafana:10.3.3
-#busybox:1.28.4
 docker.io/library/busybox:1.31.1
+quay.io/kiwigrid/k8s-sidecar:1.28.0
 #grafana/loki:2.6.1
 #grafana/loki:3.1.0
 #grafana/promtail:2.3.0
