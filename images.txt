@@ -1,7 +1,7 @@
 #支持私库
 #支持指定架构
-grafana/fluent-bit-plugin-loki:latest
-#k8s.gcr.io/sig-storage/nfs-subdir-external-provisioner:v4.0.2
+#grafana/fluent-bit-plugin-loki:latest
+k8s.gcr.io/sig-storage/nfs-subdir-external-provisioner:v4.0.2
 #jenkins/jenkins:2.488
 #debian:unstable-slim
 #nginx:latest
