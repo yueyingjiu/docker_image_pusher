@@ -11,6 +11,8 @@ goharbor/trivy-adapter-photon:v2.12.2
 goharbor/harbor-db:v2.12.2
 goharbor/redis-photon:v2.12.2
 goharbor/harbor-exporter:v2.12.2
+sorintlab/stolon:v0.16.0-pg10
+k8s.gcr.io/etcd-amd64:2.3.7
 
 #k8s.gcr.io/sig-storage/nfs-subdir-external-provisioner:v4.0.2
 #jenkins/jenkins:2.488
