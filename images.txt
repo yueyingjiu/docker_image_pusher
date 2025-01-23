@@ -1,6 +1,17 @@
 #支持私库
 #支持指定架构
 
+goharbor/nginx-photon:v2.11.1
+goharbor/harbor-portal:v2.11.1
+goharbor/harbor-core:v2.11.1
+goharbor/harbor-jobservice:v2.11.1
+goharbor/registry-photon:v2.11.1
+goharbor/harbor-registryctl:v2.11.1
+goharbor/trivy-adapter-photon:v2.11.1
+goharbor/harbor-db:v2.11.1
+goharbor/redis-photon:v2.11.1
+goharbor/harbor-exporter:v2.11.1
+
 #k8s.gcr.io/sig-storage/nfs-subdir-external-provisioner:v4.0.2
 #jenkins/jenkins:2.488
 #debian:unstable-slim
@@ -34,7 +45,7 @@
 #memcached:1.6.34-alpine
 
 #fluent-bit
-cr.fluentbit.io/fluent/fluent-bit:latest
+#cr.fluentbit.io/fluent/fluent-bit:latest
 #grafana/fluent-bit-plugin-loki:latest
 
 #promtail
