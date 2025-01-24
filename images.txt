@@ -1,6 +1,7 @@
 #支持私库
 #支持指定架构
-bitnami/redis:7.4.0-debian-12-r0
+#bitnami/redis:7.4.0-debian-12-r0
+bitnami/zookeeper:3.9.2-debian-12-r15
 
 #apache/dolphinscheduler-tools:3.2.2
 #apache/dolphinscheduler-master:3.2.2
