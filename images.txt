@@ -1,6 +1,8 @@
 #支持私库
 #支持指定架构
-bitnami/redis:4.0.8-r2
+
+hypertrace/zookeeper:latest
+#bitnami/redis:4.0.8-r2
 #goharbor/nginx-photon:v2.12.2
 #goharbor/harbor-portal:v2.12.2
 #goharbor/harbor-core:v2.12.2
