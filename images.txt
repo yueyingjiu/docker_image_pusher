@@ -1,7 +1,9 @@
 #支持私库
 #支持指定架构
-grafana/alloy:v1.7.4
-ghcr.io/jimmidyson/configmap-reload:v0.14.0
+prometheus/alertmanager:latest
+
+#grafana/alloy:v1.7.4
+#ghcr.io/jimmidyson/configmap-reload:v0.14.0
 #bitnami/redis:7.4.0-debian-12-r0
 #bitnami/zookeeper:3.9.2-debian-12-r15
 #bitnami/postgresql-repmgr:16.4.0-debian-12-r27
