@@ -1,6 +1,6 @@
 #支持私库
 #支持指定架构
-prometheus/alertmanager:latest
+alertmanager:latest
 
 #grafana/alloy:v1.7.4
 #ghcr.io/jimmidyson/configmap-reload:v0.14.0
