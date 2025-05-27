@@ -1,6 +1,7 @@
 #支持私库
 #支持指定架构
-quay.io/prometheus/alertmanager:latest
+rustdesk/rustdesk-server:latest
+#quay.io/prometheus/alertmanager:latest
 #grafana/alloy:v1.7.4
 #ghcr.io/jimmidyson/configmap-reload:v0.14.0
 #bitnami/redis:7.4.0-debian-12-r0
